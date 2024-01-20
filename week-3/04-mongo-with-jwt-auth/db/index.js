@@ -1,19 +1,30 @@
 const mongoose = require('mongoose');
+const { string } = require('zod');
 
-// Connect to MongoDB
-mongoose.connect('your-mongodb-url');
+mongoose.connect(process.env.MONGO_URL).then((data) => {
+    console.log("Mongo DB has been successfully connected!");
+});
 
-// Define schemas
 const AdminSchema = new mongoose.Schema({
-    // Schema definition here
+    username: {type:String,unique:true,require:true},
+    password: {type:String,require:true},
+    courses: [{type:mongoose.Schema.Types.objectId,ref:"Course"}],
 });
 
 const UserSchema = new mongoose.Schema({
-    // Schema definition here
+    username: {type:String,require:true,unique:true},
+    password: {type:String,require:true},
+    balance:{type:Number,default:0},
+    myCourses:[{type:mongoose.Schema.Types.objectId,ref:"Course"}],
 });
 
 const CourseSchema = new mongoose.Schema({
-    // Schema definition here
+    title:String,
+    description:String,
+    price:Number,
+    image:String,
+    owner:String,
+    published: {type:Boolean,default:false},
 });
 
 const Admin = mongoose.model('Admin', AdminSchema);
