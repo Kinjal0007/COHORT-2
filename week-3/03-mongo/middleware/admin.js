@@ -10,11 +10,11 @@ async function adminMiddleware(req, res, next) {
         username: username,
         password: password
     });
-    if(!admin){
+    if(!Admin){
         return res.status(400).send({message: "Admin not found"});
     }
     else{
-        req.admin = admin;
+        req.admin = Admin;
         next();
     }
 }
